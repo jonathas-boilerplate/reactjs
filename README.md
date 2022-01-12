@@ -1,2 +1,3 @@
-# reactjs
-Minimal ReactJS setup
+# Minimal ReactJS setup
+
+This boilerplate is to create a project exclusively based on ReactJS.
