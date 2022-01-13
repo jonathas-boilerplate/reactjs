@@ -8,8 +8,8 @@ class MyStack : Stack
 {
     public MyStack()
     {
-        var config = new Config();
-        var author = config.Require("git.author").Replace(" ", "-").ToLower();
+        var config = new Config("git");
+        var author = config.Require("author").Replace(" ", "-").ToLower();
 
         // Create an Azure Resource Group
         var resourceGroup = new ResourceGroup(author);
