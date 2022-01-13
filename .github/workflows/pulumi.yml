@@ -19,3 +19,6 @@ jobs:
           work-dir: ./iac/pulumi
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
