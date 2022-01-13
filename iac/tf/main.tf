@@ -8,7 +8,7 @@ terraform {
   backend "azurerm" {
     resource_group_name  = "rg-dev-terraform-main"
     storage_account_name = "stdevterraformmain"
-    container_name       = "terraformreactjs"
+    container_name       = "sc-dev-terraform-main"
     key                  = "terraformreactjs.tfstate"
   }
 
