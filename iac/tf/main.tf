@@ -9,7 +9,7 @@ terraform {
   backend "azurerm" {
     resource_group_name  = "rg-terraform-state-dev-001"
     storage_account_name = "stterraformstatedev001"
-    container_name       = "${data.external.ResourceGroupMetadata.result.name}"
+    container_name       = data.external.ResourceGroupMetadata.result.name
     key                  = "terraform.tfstate"
   }
 
