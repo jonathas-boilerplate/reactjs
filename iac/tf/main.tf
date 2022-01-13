@@ -5,43 +5,68 @@ terraform {
       version = "~> 2.65"
     }
   }
-  backend "azurerm" {
-    resource_group_name  = "rg-dev-terraform-main"
-    storage_account_name = "stdevterraformmain"
-    container_name       = "sc-dev-terraform-main"
-    key                  = "terraformreactjs.tfstate"
-  }
 
   required_version = ">= 1.1.0"
+}
+
+variable "appName" {
+  default = "min-reactjs"
+}
+
+variable "environment" {
+  default = "Development"
+}
+
+variable "context" {
+  default = "Feature"
+}
+
+variable "appVersion" {
+  default = "1"
+}
+
+data "external" "ResourceGroupMetadata" {
+  program = ["node", "${path.module}/ResourceGroupMetadata.js"]
+  query = {
+    appName     = var.appName
+    version     = var.appVersion
+    environment = var.environment
+    context     = var.context
+  }
+}
+
+data "external" "StaticWebAppMetadata" {
+  program = ["node", "${path.module}/StaticWebAppMetadata.js"]
+  query = {
+    appName     = var.appName
+    version     = var.appVersion
+    environment = var.environment
+    context     = var.context
+  }
 }
 
 provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "rg-dev-reactjs-main" {
-  name     = "rg-dev-reactjs-main"
+resource "azurerm_resource_group" "resource-group" {
+  name     = data.external.ResourceGroupMetadata.result.name
   location = "West Europe"
   tags = {
-    "created"     = "2022-01-12"
-    "expires"     = "2022-01-12"
-    "environment" = "Development"
-    "context"     = "Main"
-    "client"      = "Boilerplate"
-    "author"      = "Jonathas Costa"
+    "created"     = data.external.ResourceGroupMetadata.result.created
+    "expires"     = data.external.ResourceGroupMetadata.result.expires
+    "environment" = data.external.ResourceGroupMetadata.result.environment
   }
 }
 
-resource "azurerm_static_site" "sw-dev-reactjs-main" {
-  name                = "sw-dev-reactjs-main"
-  resource_group_name = "rg-dev-reactjs-main"
+resource "azurerm_static_site" "static-web-app" {
+  name                = data.external.StaticWebAppMetadata.result.name
+  resource_group_name = data.external.ResourceGroupMetadata.result.name
   location            = "West Europe"
   tags = {
-    "created"     = "2022-01-12"
-    "expires"     = "2022-01-12"
-    "environment" = "Development"
-    "context"     = "Main"
-    "client"      = "Boilerplate"
-    "author"      = "Jonathas Costa"
+    "created"     = data.external.StaticWebAppMetadata.result.created
+    "expires"     = data.external.StaticWebAppMetadata.result.expires
+    "environment" = data.external.StaticWebAppMetadata.result.environment
+    "context"     = data.external.StaticWebAppMetadata.result.context
   }
 }
