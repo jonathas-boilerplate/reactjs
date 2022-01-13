@@ -8,8 +8,11 @@ class MyStack : Stack
 {
     public MyStack()
     {
+        var config = new Config();
+        var author = config.Require("git.author").Replace(" ", "-").ToLower();
+
         // Create an Azure Resource Group
-        var resourceGroup = new ResourceGroup("resourceGroup");
+        var resourceGroup = new ResourceGroup(author);
 
         // Create an Azure resource (Storage Account)
         var storageAccount = new StorageAccount("sa", new StorageAccountArgs
