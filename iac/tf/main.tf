@@ -9,7 +9,7 @@ terraform {
   backend "azurerm" {
     resource_group_name  = "rg-terraform-state-dev-001"
     storage_account_name = "stterraformstatedev001"
-    container_name       = data.external.ResourceGroupMetadata.result.name
+    container_name       = ${data.external.ResourceGroupMetadata.result.name}
     key                  = "terraform.tfstate"
   }
 
@@ -63,6 +63,7 @@ resource "azurerm_resource_group" "resource-group" {
     "created"     = data.external.ResourceGroupMetadata.result.created
     "expires"     = data.external.ResourceGroupMetadata.result.expires
     "environment" = data.external.ResourceGroupMetadata.result.environment
+    "context"     = data.external.StaticWebAppMetadata.result.context
   }
 }
 
