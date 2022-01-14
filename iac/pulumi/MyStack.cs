@@ -9,7 +9,7 @@ class MyStack : Stack
 {
     public MyStack()
     {
-        var prNumber = Environment.GetEnvironmentVariable("PR_NUMBER") ?? "0";
+        var prNumber = Environment.GetEnvironmentVariable("RUN_NUMBER") ?? "0";
         //Pulumi.AzureNative.LabServices.Environment.
         // Create an Azure Resource Group
         var resourceGroup = new ResourceGroup($"rg-{prNumber.PadLeft(3, '0')}");

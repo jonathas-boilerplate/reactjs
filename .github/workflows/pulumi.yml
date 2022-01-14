@@ -1,23 +1,25 @@
 name: Pulumi
 
 on:
-  # push:
-  #   branches: 
-  #     - 'feature/*'
-  #     - 'patch/*'
-  #     - 'bugfix/*'
-  pull_request:
+  push:
+    branches: 
+      - 'feature/*'
+      - 'patch/*'
+      - 'bugfix/*'
 
 env:
-  PR_NUMBER: ${{ github.event.number }}
-  
+  RUN_NUMBER: ${{ github.run_number }}
+
 jobs:
   up:
     name: Preview
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        name: Checkout code
+        
       - uses: pulumi/actions@v3
+        name: Preview Pulumi changes
         with:
           command: preview
           stack-name: dev
