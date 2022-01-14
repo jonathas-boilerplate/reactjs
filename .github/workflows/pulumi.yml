@@ -2,10 +2,14 @@ name: Pulumi
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: 
+      - 'feature/*'
+      - 'patch/*'
+      - 'bugfix/*'
 
+env:
+  PR_NUMBER: ${{ github.event.build.number }}
+  
 jobs:
   up:
     name: Preview

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Pulumi;
 using Pulumi.AzureNative.Resources;
@@ -8,11 +9,10 @@ class MyStack : Stack
 {
     public MyStack()
     {
-        var config = new Config("git");
-        var author = config.Require("author").Replace(" ", "-").ToLower();
-
+        var prNumber = Environment.GetEnvironmentVariable("PR_NUMBER") ?? "0";
+        //Pulumi.AzureNative.LabServices.Environment.
         // Create an Azure Resource Group
-        var resourceGroup = new ResourceGroup(author);
+        var resourceGroup = new ResourceGroup($"rg-{prNumber.PadLeft(3, '0')}");
 
         // Create an Azure resource (Storage Account)
         var storageAccount = new StorageAccount("sa", new StorageAccountArgs
