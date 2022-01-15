@@ -22,36 +22,17 @@ class MyStack : Stack
             .Build();
 
         var resourceGroup = new ResourceGroup(resourceGroupName);
-        var staticApp = new StaticSite("", new StaticSiteArgs
-        {
-            ResourceGroupName = resourceGroupName,
-        });
-        // Create an Azure resource (Storage Account)
-        var storageAccount = new StorageAccount("sa", new StorageAccountArgs
-        {
-            ResourceGroupName = resourceGroup.Name,
-            Sku = new SkuArgs
-            {
-                Name = SkuName.Standard_LRS
-            },
-            Kind = Kind.StorageV2
-        });
 
-        // Export the primary key of the Storage Account
-        this.PrimaryStorageKey = Output.CreateSecret(GetStorageAccountPrimaryKey(resourceGroupName, storageAccount.Name.ToString()));
-    }
+        var staticSiteName = new StaticSiteNameBuilder()
+            .AppName(appName)
+            .Environment(environment)
+            .BuildNumber(runNumber)
+            .Build();
 
-    [Output]
-    public Output<string> PrimaryStorageKey { get; set; }
-
-    private static async Task<string> GetStorageAccountPrimaryKey(string resourceGroupName, string accountName)
-    {
-        var accountKeys = await ListStorageAccountKeys.InvokeAsync(new ListStorageAccountKeysArgs
+        var staticApp = new StaticSite(staticSiteName, new StaticSiteArgs
         {
-            ResourceGroupName = resourceGroupName,
-            AccountName = accountName
+            ResourceGroupName = resourceGroupName            
         });
-        return accountKeys.Keys[0].Value;
     }
 }
 
