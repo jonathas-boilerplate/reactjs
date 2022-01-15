@@ -8,10 +8,12 @@ on:
       - 'bugfix/*'
 
 env:
+  APP_NAME: reactjs
+  ENVIRONMENT: dev
   RUN_NUMBER: ${{ github.run_number }}
 
 jobs:
-  up:
+  preview:
     name: Preview
     runs-on: ubuntu-latest
     steps:
